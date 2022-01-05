@@ -1,10 +1,11 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from seleniumpagefactory.Pagefactory import PageFactory
 from selenium import webdriver
 import unittest
 
-class BasePage(object):
+class BasePage(PageFactory):
 
     def __init__(self, driver):
         self.driver = driver
@@ -19,23 +20,35 @@ class BasePage(object):
 
 class HomePage(BasePage):
 
-    BUTTOM_MI = "//img [contains(@src,'mi-brand')]"
+    locators = {
+        "bottom_mi": ('XPATH', "//img [contains(@src,'mi-brand')]")
+    }
 
     def clickButtonMi(self):
-        self.driver.find_element_by_xpath(self.BUTTOM_MI).click()
+        self.bottom_mi.click()
 
 class XiaomiPage(BasePage):
 
     SEARCH_RESULT_PRODUCT = "//article [@class='brand__item']"
 
+    locators = {
+        "search_result_product": ('XPATH', "//article [@class='brand__item']")
+    }
+
     def getElementsList(self):
         return len(self.driver.find_elements_by_xpath(self.SEARCH_RESULT_PRODUCT))
 
+    # def getElementsList(self):
+    #     return self.search_result_product.get_list_item_count()
+
 class PhonesAndAccessoriesPage(BasePage):
-    BUTTON_SMARTPHONES = "//div/a[@href='https://avic.ua/smartfonyi']"
+
+    locators = {
+        "button_smartphones": ('XPATH', "//div/a[@href='https://avic.ua/smartfonyi']")
+    }
 
     def clickButtonSmartphones(self):
-        self.driver.find_element_by_xpath(self.BUTTON_SMARTPHONES).click()
+        self.button_smartphones.click()
 
 class BaseTest(unittest.TestCase):
 
